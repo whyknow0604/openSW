@@ -1,6 +1,6 @@
 package scripts;
 
-public class kuri {
+public class kuir {
     public static void main(String[] args) throws Exception {
 
         String command =  "-i";

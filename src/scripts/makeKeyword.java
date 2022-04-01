@@ -28,7 +28,6 @@ public class makeKeyword {
     public void convertXml() throws Exception{
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
         Document kkmDoc = docBuilder.parse(input_file);
 
         Element root = kkmDoc.getDocumentElement();

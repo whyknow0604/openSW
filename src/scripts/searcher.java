@@ -49,18 +49,19 @@ public class searcher {
                 Keyword kwrd = klBody.get(j);
 
                 if(hashmap.get(kwrd.getString()) == null){
-                    wq  = "0.0 1 0.0 2 0.0 3 0.0 4 0.0 0.0 0.0".split(" ");
+                    System.out.println(kwrd.getString() + "은 검색된 문서가 없습니다.");
                 }else {
                     wq = String.valueOf(hashmap.get(kwrd.getString())).split(" ");
+                    result[result_index] += Double.parseDouble(wq[2+(result_index*2)]) * kwrd.getCnt();
                 }
-                result[result_index] += Double.parseDouble(wq[2+(result_index*2)]) * kwrd.getCnt();
             }
-
         }
+
         int[] bigindex = new int[3];
         double max;
-        int m_index = 0;
-        for(int i = 0; i < 3; i++){
+        int m_index = -1;
+        int i;
+        for(i = 0; i < 3; i++){
             max = 0;
             for(int j = 0; j < result.length; j++){
                 if(max < result[j]){
@@ -68,12 +69,17 @@ public class searcher {
                     m_index = j;
                 }
             }
-            result[m_index] = 0;
-            bigindex[i] = m_index;
+            if(m_index != -1){
+                result[m_index] = -1 * result[m_index];
+                bigindex[i] = m_index;
+            }else{
+                break;
+            }
+
         }
 
-        for(int i = 0; i < 3; i++){
-            System.out.println( list.item(bigindex[i]).getTextContent());
+        for(int j = 0; j < i; j++){
+            System.out.println( Math.round((result[bigindex[j]]*-1)*100)/100.0 + " : "  + list.item(bigindex[j]).getTextContent());
         }
 
     }

@@ -3,9 +3,10 @@ package scripts;
 public class kuir {
     public static void main(String[] args) throws Exception {
 
-        String command =  "-s";
-        String path = "index.post";
-        String query = "건면 파스타와 생면 파스타 모두 다양한 모양과 변형을 가지고 있다.";
+        String command =  args[0];
+        String path = args[1];
+
+
 
         if(command.equals("-c")) {
             makeCollection collection = new makeCollection(path);
@@ -20,8 +21,11 @@ public class kuir {
             indexer.makeHashmapPost();
         }
         else if(command.equals("-s")) {
-            searcher searcher = new searcher(path, query);
-            searcher.innerproduct();
+            if(args[2].equals("-q")){
+                searcher searcher = new searcher(path, args[3]);
+                searcher.CalcSim();
+            }
+
         }
 
     }

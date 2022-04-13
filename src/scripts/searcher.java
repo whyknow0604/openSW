@@ -19,7 +19,7 @@ public class searcher {
     private String data_path;
     private String query = "";
 
-    double[] result;
+    double[] qid;
     double[] doc_weight;
     double[] query_weight;
 
@@ -33,7 +33,7 @@ public class searcher {
         this.query = query;
     }
 
-    public void innerproduct() throws Exception {
+    public NodeList innerproduct() throws Exception {
 
         FileInputStream fileStream = new FileInputStream(data_path);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
@@ -51,7 +51,7 @@ public class searcher {
         KeywordExtractor ke = new KeywordExtractor();
         KeywordList klBody = ke.extractKeyword(query,true);
 
-        result = new double[list.getLength()];
+        qid = new double[list.getLength()];
         doc_weight = new double[list.getLength()];
         query_weight = new double[list.getLength()];
 
@@ -64,7 +64,7 @@ public class searcher {
                     System.out.println(kwrd.getString() + "은 검색된 문서가 없습니다.");
                 }else {
                     wq = String.valueOf(hashmap.get(kwrd.getString())).split(" ");
-                    result[result_index] += Double.parseDouble(wq[2+(result_index*2)]) * kwrd.getCnt();
+                    qid[result_index] += Double.parseDouble(wq[2+(result_index*2)]) * kwrd.getCnt();
                     doc_weight[result_index] += Math.pow(Double.parseDouble(wq[2+(result_index*2)]),2);
                     query_weight[result_index] += Math.pow(kwrd.getCnt(),2);
                 }
@@ -76,37 +76,39 @@ public class searcher {
         }
 
         for(int x = 0; x < list.getLength(); x++){
-            doc_weight[x] = Math.sqrt(doc_weight[x]);
-            System.out.println("  doc_weight["+x+"] : " + doc_weight[x]);
-            query_weight[x] = Math.sqrt(query_weight[x]);
-            System.out.println("query_weight["+x+"] : " + query_weight[x]);
+            doc_weight[x] = Math.round(Math.sqrt(doc_weight[x])*100)/100.0;
+            query_weight[x] = Math.round(Math.sqrt(query_weight[x])*100)/100.0;
         }
 
+        return list;
+    }
+
+    public void CalcSim() throws Exception{
+        NodeList list = innerproduct();
+        double sim[] = new double[qid.length];
+        for(int n = 0; n < qid.length; n++){
+            sim[n] = qid[n]/(doc_weight[n] * query_weight[n]);
+        }
 
         for(i = 0; i < 3; i++){
             max = 0;
             m_index = -1;
-            for(int j = 0; j < result.length; j++){
-                if(max < result[j]){
-                    max = result[j];
+            for(int j = 0; j < sim.length; j++){
+                if(max < sim[j]){
+                    max = sim[j];
                     m_index = j;
                 }
             }
             if(m_index != -1){
-                result[m_index] = -1 * result[m_index];
+                sim[m_index] = -1 * sim[m_index];
                 bigindex[i] = m_index;
             }else{
                 break;
             }
         }
         for(int j = 0; j < i; j++){
-            System.out.println( Math.round((result[bigindex[j]]*-1)*100)/100.0 + " : "  + list.item(bigindex[j]).getTextContent());
+            System.out.println( list.item(bigindex[j]).getTextContent() + " : "  +  sim[bigindex[j]]*-1);
         }
-
-    }
-
-    public void CalcSim()throws Exception{
-
     }
 
 }

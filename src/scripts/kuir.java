@@ -5,7 +5,7 @@ public class kuir {
 
         String command =  "-s";
         String path = "index.post";
-        String query = "라면에는 면, 분말 스프가 파스타 볶음밥 있다.";
+        String query = "건면 파스타와 생면 파스타 모두 다양한 모양과 변형을 가지고 있다.";
 
         if(command.equals("-c")) {
             makeCollection collection = new makeCollection(path);
@@ -21,7 +21,7 @@ public class kuir {
         }
         else if(command.equals("-s")) {
             searcher searcher = new searcher(path, query);
-            searcher.CalcSim();
+            searcher.innerproduct();
         }
 
     }

@@ -21,7 +21,7 @@ public class kuir {
         }
         else if(command.equals("-s")) {
             searcher searcher = new searcher(path, query);
-            searcher.searchQuery();
+            searcher.CalcSim();
         }
 
     }

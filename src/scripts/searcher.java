@@ -23,7 +23,7 @@ public class searcher {
         this.query = query;
     }
 
-    public void searchQuery() throws Exception {
+    public void CalcSim() throws Exception {
 
         FileInputStream fileStream = new FileInputStream(data_path);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);

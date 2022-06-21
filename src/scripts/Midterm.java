@@ -22,6 +22,7 @@ public class Midterm {
     String[] titleArray;
     String[] bodyArray;
     String[] query_keyword_Array;
+    int[] point_Array;
     KeywordList[] bodyKeywordList;
 
     public Midterm(String path, String query) {
@@ -43,6 +44,7 @@ public class Midterm {
 
         titleArray = new String[Titlelist.getLength()];
         bodyArray = new String[Bodylist.getLength()];
+        point_Array = new int[Bodylist.getLength()];
         bodyKeywordList = new KeywordList[Bodylist.getLength()];
         query_keyword_Array = new String[klBody.size()];
         for(int i = 0; i < Titlelist.getLength(); i++){
@@ -60,22 +62,20 @@ public class Midterm {
             bodyKeywordList[i] = bodykeyword;
         }
 
-        for(int i = 0; i < Titlelist.getLength(); i++){
-            System.out.println(i);
-            for(int j = 0; j < bodyKeywordList[i].size(); j++){
-                System.out.print(bodyKeywordList[i].get(j).getString()+ " ");
-            }
-        }
 
         for(int i = 0; i < query_keyword_Array.length; i++){
             for(int j = 0; j < titleArray.length; j++){
                 for(int x = 0; x < bodyKeywordList[j].size(); x++){
                     if(bodyKeywordList[j].get(x).getString().equals(query_keyword_Array[i])){
-                        
+                        point_Array[j] += 1;
                     }
 
                 }
             }
+        }
+
+        for(int i = 0; i < Titlelist.getLength(); i++){
+            System.out.println(point_Array[i]);
         }
 
     }
